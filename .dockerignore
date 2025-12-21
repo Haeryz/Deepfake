@@ -1,0 +1,30 @@
+# Virtual environment
+67/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Notebooks (if not needed in container)
+notebook/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
