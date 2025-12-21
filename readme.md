@@ -8,48 +8,48 @@
 
 
 1. [Deskripsi Project](#-deskripsi-project-)
-      - [Latar Belakang](#latar-belakang)
-      - [Tujuan Pengembangan](#tujuan-pengembangan)
+  - [Latar Belakang](#latar-belakang)
+  - [Tujuan Pengembangan](#tujuan-pengembangan)
 2. [Sumber Dataset](#-sumber-dataset-)
 3. [Preprocessing dan Pemodelan](#-preprocessing-dan-pemodelan-)
-      - [Pemilihan Fitur / Feature Extraction Strategy](#pemilihan-fitur--feature-extraction-strategy)
-      - [Preprocessing Data](#preprocessing-data)
-      - [Pemodelan](#pemodelan)
+  - [Pemilihan Fitur / Feature Extraction Strategy](#pemilihan-fitur--feature-extraction-strategy)
+  - [Preprocessing Data](#preprocessing-data)
+  - [Pemodelan](#pemodelan)
 4. [Langkah Instalasi](#-langkah-instalasi-)
-      - [Software Utama](#software-utama)
-      - [Dependensi](#dependensi)
-      - [Menjalankan Sistem Prediksi](#menjalankan-sistem-prediksi)
-      - [Pelatihan Model](#pelatihan-model)
+  - [Software Utama](#software-utama)
+  - [Dependensi](#dependensi)
+  - [Menjalankan Sistem Prediksi](#menjalankan-sistem-prediksi)
+  - [Pelatihan Model](#pelatihan-model)
 5. [Hasil dan Analisis](#-hasil-dan-analisis-)
-      - [Evaluasi Model](#evaluasi-model )
+  - [Model Performance — Summary](#model-performance--summary-)
+  - [Learning Curves & Run Metadata](#learning-curves--run-metadata)
+  - [Failure analysis & Ablations](#failure-analysis--ablations-)
 6. [Sistem Streamlit (Demo)](#-sistem-streamlit-demo-)
-      - [Tampilan](#tampilan)
-      - [Link Live Demo](#link-live-demo)
+  - [Run locally](#run-locally)
+  - [Tampilan Hasil Prediksi](#tampilan-hasil-prediksi)
+  - [Live Demo (Deployment)](#live-demo-deployment)
 7. [Authors & Citation](#-authors--citation-)  
 
 ---
 
-
 <h1 align="center">📚 Deskripsi Project 📚</h1>
 
-**Note:** This README is formatted as a NeurIPS-style research README template for an image forensics / detection study. Replace placeholder values (bracketed) with your exact experimental details before submission.
-
 ### Latar Belakang
-The rapid advancement of AI image generation technologies has led to an increase in synthetic images, particularly deepfakes depicting politically relevant content such as public figures, events, and memes, posing significant risks to misinformation and societal trust. Current deepfake detection methods often struggle with robustness across diverse content types and generators, especially in politically charged media where accuracy is critical. We hypothesize that Convolutional Neural Networks (CNNs) trained on a balanced dataset of real and synthetic images can effectively learn discriminative features to detect AI-generated content with high reliability.
+Kemajuan pesat AI image generation technologies telah menyebabkan peningkatan synthetic images, khususnya deepfakes yang menggambarkan politically relevant content seperti public figures, events, dan memes, menimbulkan risiko signifikan terhadap misinformation dan societal trust. Deepfake detection methods saat ini sering kesulitan dengan robustness di berbagai content types dan generators, terutama dalam politically charged media di mana accuracy sangat kritikal. Kami berhipotesis bahwa Convolutional Neural Networks (CNNs) yang dilatih pada balanced dataset dari real dan synthetic images dapat secara efektif mempelajari discriminative features untuk mendeteksi AI-generated content dengan high reliability.
 
 ### Tujuan Pengembangan
-The primary goal of this project is to develop and train CNN-based models, including Base CNN, EfficientNet, and MobileNet, for binary classification of real versus AI-generated images using the OpenFake dataset. We aim to achieve robust performance in detecting synthetic images across various categories such as faces, events, and memes, with a particular focus on political content. To ensure reproducibility, we release the training code in a Jupyter notebook, along with trained model weights and evaluation scripts for transparent and reproducible results. Ethically, we utilize the OpenFake dataset under the CC-BY-SA-4.0 license, ensuring responsible use and noting limitations in handling sensitive political imagery to avoid misuse.  
-
+Tujuan utama proyek ini adalah mengembangkan dan melatih model CNN-based, termasuk Base CNN, EfficientNet, dan MobileNet, untuk binary classification gambar real versus AI-generated menggunakan OpenFake dataset. Kami bertujuan mencapai robust performance dalam mendeteksi synthetic images di berbagai kategori seperti faces, events, dan memes, dengan fokus khusus pada konten politik. Untuk memastikan reproducibility, kami merilis training code dalam sebuah Jupyter notebook, bersama dengan trained model weights dan evaluation scripts untuk hasil yang transparan dan reproducible. Secara etis, kami menggunakan OpenFake dataset di bawah lisensi CC-BY-SA-4.0, memastikan penggunaan yang bertanggung jawab dan mencatat batasan dalam menangani imagery politik sensitif untuk menghindari penyalahgunaan.
 ---
 <h1 align="center">📊 Sumber Dataset 📊</h1>
 
-- **Real images:** Images labeled as 'real' from the [OpenFake dataset](https://huggingface.co/datasets/ComplexDataLab/OpenFake), consisting of authentic photographs including faces of public figures, events, and other content.
-- **AI-generated images:** Images labeled as 'fake' from the [OpenFake dataset](https://huggingface.co/datasets/ComplexDataLab/OpenFake), generated using various AI models to create synthetic content with political relevance, including faces, events (e.g., disasters, protests), and multimodal meme-style images with text overlays.
-- **Generation pipeline (if self-generated):** The dataset is curated from existing sources; synthetic images are produced by multiple AI generators as documented in the dataset metadata.
-- **Splits:** Train: ~27,485 images (80% of the train split), Val: ~6,871 images (20% of the train split), Test: 3,557 images (from the dedicated test split). The splits ensure no overlap between train, validation, and test sets.
-- **Augmentations applied (test-time augmentations):** Standard image preprocessing including resizing and normalization; no additional test-time augmentations specified.
-- **Deduplication:** Images are deduplicated based on perceptual hashing to ensure exclusivity across splits.
-- **Download command / reproduction:**
+* **Real images:** Images dilabeli sebagai 'real' dari [OpenFake dataset](https://huggingface.co/datasets/ComplexDataLab/OpenFake), terdiri dari authentic photographs termasuk faces dari public figures, events, dan konten lainnya.
+* **AI-generated images:** Images dilabeli sebagai 'fake' dari [OpenFake dataset](https://huggingface.co/datasets/ComplexDataLab/OpenFake), di-generate menggunakan berbagai AI models untuk membuat synthetic content dengan relevansi politik, termasuk faces, events (contoh: disasters, protests), dan multimodal meme-style images dengan text overlays.
+* **Generation pipeline (if self-generated):** Dataset dikurasi dari sumber yang ada; synthetic images diproduksi oleh multiple AI generators seperti didokumentasikan dalam dataset metadata.
+* **Splits:** Train: ~27,485 images (80% dari train split), Val: ~6,871 images (20% dari train split), Test: 3,557 images (dari dedicated test split). Splits memastikan tidak ada overlap antara train, validation, dan test sets.
+* **Augmentations applied (test-time augmentations):** Standard image preprocessing termasuk resizing dan normalization; tidak ada test-time augmentations tambahan yang ditentukan.
+* **Deduplication:** Images di-deduplicated berdasarkan perceptual hashing untuk memastikan exclusivity di seluruh splits.
+* **Download command / reproduction:**
+
 ```
 # Install datasets library
 pip install datasets
@@ -69,35 +69,36 @@ ds = load_dataset("ComplexDataLab/OpenFake")
 
 ### Pemilihan Fitur / Feature Extraction Strategy
 
-- **Input space:** RGB pixels resized to 224x224 for model input.
-- **Metadata:** Images are converted to RGB format if necessary; no EXIF data or generator metadata (prompts/seeds) are used as model inputs.
-- **Hand-crafted features (optional):** None; features are learned end-to-end by the CNN models.
-- **Patch sampling:** Whole images are used without patch sampling.
-- **Deduplication:** Images are deduplicated based on perceptual hashing as provided by the dataset.
-- **Notes:** Preprocessing includes resizing, tensor conversion, and ImageNet normalization.
-
+* **Input space:** RGB pixels di-resize ke 224x224 untuk model input.
+* **Metadata:** Images dikonversi ke RGB format jika perlu; tidak ada EXIF data atau generator metadata (prompts/seeds) yang digunakan sebagai model inputs.
+* **Hand-crafted features (optional):** Tidak ada; features dipelajari secara end-to-end oleh CNN models.
+* **Patch sampling:** Whole images digunakan tanpa patch sampling.
+* **Deduplication:** Images di-deduplicated berdasarkan perceptual hashing seperti yang disediakan oleh dataset.
+* **Notes:** Preprocessing mencakup resizing, tensor conversion, dan ImageNet normalization.
+````mermaid
 graph TB
-    Start[Raw Image] --> RGB{RGB Format?}
-    RGB -->|No| Convert[Convert to RGB]
-    RGB -->|Yes| Resize[Resize to 224x224]
-    Convert --> Resize
-    
-    Resize --> Tensor[Convert to Tensor]
-    Tensor --> Norm["ImageNet Normalization<br/>mean=[0.485, 0.456, 0.406]<br/>std=[0.229, 0.224, 0.225]"]
-    Norm --> Model[Model Input]
-    
-    Start -.->|Not Used| EXIF[EXIF Data]
-    Start -.->|Not Used| Meta[Generator Metadata<br/>prompts/seeds]
-    
-    Hand[Hand-crafted Features] -.->|Not Used| Model
-    CNN[End-to-end CNN Learning] -->|Used| Model
-    
-    Whole[Whole Images] -->|Used| Model
-    Patch[Patch Sampling] -.->|Not Used| Model
-    
-    Dedup[Perceptual Hash Deduplication] -.->|Dataset Level| Start
-    
-    style EXIF fill:#ffcccc
+  Start[Raw Image] --> RGB{RGB Format?}
+  RGB -->|No| Convert[Convert to RGB]
+  RGB -->|Yes| Resize[Resize to 224x224]
+  Convert --> Resize
+
+  Resize --> Tensor[Convert to Tensor]
+  Tensor --> Norm["ImageNet Normalization<br/>mean=[0.485, 0.456, 0.406]<br/>std=[0.229, 0.224, 0.225]"]
+  Norm --> Model[Model Input]
+
+  Start -.->|Not Used| EXIF[EXIF Data]
+  Start -.->|Not Used| Meta[Generator Metadata<br/>prompts/seeds]
+
+  Hand[Hand-crafted Features] -.->|Not Used| Model
+  CNN[End-to-end CNN Learning] -->|Used| Model
+
+  Whole[Whole Images] -->|Used| Model
+  Patch[Patch Sampling] -.->|Not Used| Model
+
+  Dedup[Perceptual Hash Deduplication] -.->|Dataset Level| Start
+
+  style EXIF fill:#ffcccc
+````
     style Meta fill:#ffcccc
     style Hand fill:#ffcccc
     style Patch fill:#ffcccc
@@ -107,119 +108,129 @@ graph TB
 
 ### Preprocessing Data
 
-- **Standardization / resizing pipeline:** Images are resized to 224x224 pixels, converted to PyTorch tensors, and normalized using ImageNet mean and standard deviation (mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]).
-- **Augmentations (training):** No additional data augmentations such as flips, crops, or compressions are applied; only the basic preprocessing pipeline is used.
-- **Test-time perturbations:** No test-time augmentations or perturbations are specified in the notebook.
-- **Deduplication & splits:** The dataset's train split is divided into 80% for training and 20% for validation using random_split with a fixed seed (42) for reproducibility. The test split is used as-is for evaluation. Deduplication is handled by the dataset using perceptual hashing.
-- **Notes:** Preprocessing is implemented using torchvision.transforms.Compose for the custom CNN, and AutoImageProcessor for pre-trained models like EfficientNet and MobileNet.
+* **Standardization / resizing pipeline:** Images di-resize ke 224x224 pixels, dikonversi ke PyTorch tensors, dan di-normalized menggunakan ImageNet mean dan standard deviation (mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]).
+* **Augmentations (training):** Tidak ada data augmentations tambahan seperti flips, crops, atau compressions yang diterapkan; hanya basic preprocessing pipeline yang digunakan.
+* **Test-time perturbations:** Tidak ada test-time augmentations atau perturbations yang ditentukan dalam notebook.
+* **Deduplication & splits:** Train split dataset dibagi menjadi 80% untuk training dan 20% untuk validation menggunakan random_split dengan fixed seed (42) untuk reproducibility. Test split digunakan apa adanya untuk evaluation. Deduplication ditangani oleh dataset menggunakan perceptual hashing.
+* **Notes:** Preprocessing diimplementasikan menggunakan torchvision.transforms.Compose untuk custom CNN, dan AutoImageProcessor untuk pre-trained models seperti EfficientNet dan MobileNet.
 
+````mermaid
 graph LR
-    subgraph Dataset
-        DS[Original Dataset] --> Dedup[Perceptual Hash<br/>Deduplication]
-        Dedup --> TrainSplit[Train Split]
-        Dedup --> TestSplit[Test Split]
-    end
-    
-    subgraph Data Splitting
-        TrainSplit --> Split{random_split<br/>seed=42}
-        Split -->|80%| Train[Training Set]
-        Split -->|20%| Val[Validation Set]
-        TestSplit --> Test[Test Set<br/>as-is]
-    end
-    
-    subgraph Preprocessing Pipeline
-        Train --> PP1[Preprocessing]
-        Val --> PP2[Preprocessing]
-        Test --> PP3[Preprocessing]
+  subgraph Dataset
+    DS[Original Dataset] --> Dedup[Perceptual Hash<br/>Deduplication]
+    Dedup --> TrainSplit[Train Split]
+    Dedup --> TestSplit[Test Split]
+  end
+
+  subgraph Data Splitting
+    TrainSplit --> Split{random_split<br/>seed=42}
+    Split -->|80%| Train[Training Set]
+    Split -->|20%| Val[Validation Set]
+    TestSplit --> Test[Test Set<br/>as-is]
+  end
+
+  subgraph Preprocessing Pipeline
+    Train --> PP1[Preprocessing]
+    Val --> PP2[Preprocessing]
+    Test --> PP3[Preprocessing]
         
-        PP1 --> R1[Resize 224x224]
-        PP2 --> R2[Resize 224x224]
-        PP3 --> R3[Resize 224x224]
+    PP1 --> R1[Resize 224x224]
+    PP2 --> R2[Resize 224x224]
+    PP3 --> R3[Resize 224x224]
         
-        R1 --> T1[To Tensor]
-        R2 --> T2[To Tensor]
-        R3 --> T3[To Tensor]
+    R1 --> T1[To Tensor]
+    R2 --> T2[To Tensor]
+    R3 --> T3[To Tensor]
         
-        T1 --> N1[Normalize<br/>ImageNet Stats]
-        T2 --> N2[Normalize<br/>ImageNet Stats]
-        T3 --> N3[Normalize<br/>ImageNet Stats]
-    end
-    
-    subgraph Implementation
-        N1 --> Custom1[Custom CNN:<br/>torchvision.transforms.Compose]
-        N2 --> Custom2[Custom CNN:<br/>torchvision.transforms.Compose]
-        N3 --> Custom3[Custom CNN:<br/>torchvision.transforms.Compose]
+    T1 --> N1[Normalize<br/>ImageNet Stats]
+    T2 --> N2[Normalize<br/>ImageNet Stats]
+    T3 --> N3[Normalize<br/>ImageNet Stats]
+  end
+
+  subgraph Implementation
+    N1 --> Custom1[Custom CNN:<br/>torchvision.transforms.Compose]
+    N2 --> Custom2[Custom CNN:<br/>torchvision.transforms.Compose]
+    N3 --> Custom3[Custom CNN:<br/>torchvision.transforms.Compose]
         
-        N1 --> Pre1[Pretrained Models:<br/>AutoImageProcessor]
-        N2 --> Pre2[Pretrained Models:<br/>AutoImageProcessor]
-        N3 --> Pre3[Pretrained Models:<br/>AutoImageProcessor]
-    end
-    
-    subgraph Not Applied
-        Aug[Data Augmentations<br/>flips, crops, compressions]
-        TTA[Test-time Augmentations]
-    end
-    
-    style Aug fill:#ffcccc
-    style TTA fill:#ffcccc
-    style Train fill:#ccffcc
-    style Val fill:#ffffcc
-    style Test fill:#ffeecc
-    style Dedup fill:#cce5ff
+    N1 --> Pre1[Pretrained Models:<br/>AutoImageProcessor]
+    N2 --> Pre2[Pretrained Models:<br/>AutoImageProcessor]
+    N3 --> Pre3[Pretrained Models:<br/>AutoImageProcessor]
+  end
+
+  subgraph Not Applied
+    Aug[Data Augmentations<br/>flips, crops, compressions]
+    TTA[Test-time Augmentations]
+  end
+
+  style Aug fill:#ffcccc
+  style TTA fill:#ffcccc
+  style Train fill:#ccffcc
+  style Val fill:#ffffcc
+  style Test fill:#ffeecc
+  style Dedup fill:#cce5ff
+````
 ---
 
 ### Pemodelan
 
 **Model overview**
 
-- **Architectures (3 models):**
-  1. **Custom CNN** — 4 convolutional blocks with filters [32, 64, 128, 256]; each block uses Batch Normalization and Max Pooling. Dropout (p=0.5) is applied before Global Average Pooling. Classifier: two fully-connected layers (128 -> 1).
-  2. **EfficientNetV2-S** — pre-trained (`timm/tf_efficientnetv2_s.in21k`), fine-tuned for binary classification.
-  3. **MobileNetV2** — pre-trained (`google/mobilenet_v2_1.0_224`), fine-tuned for binary classification.
+* **Architectures (3 models):**
+1. **Custom CNN** — 4 convolutional blocks dengan filters [32, 64, 128, 256]; setiap block menggunakan Batch Normalization dan Max Pooling. Dropout (p=0.5) diterapkan sebelum Global Average Pooling. Classifier: dua fully-connected layers (128 -> 1).
+2. **EfficientNetV2-S** — pre-trained (`timm/tf_efficientnetv2_s.in21k`), di-fine-tuned untuk binary classification.
+3. **MobileNetV2** — pre-trained (`google/mobilenet_v2_1.0_224`), di-fine-tuned untuk binary classification.
+
+
 
 **What’s new / design choices**
 
-- **Novelty:** The Custom CNN prioritizes efficiency (lightweight, fewer parameters) for fast training and inference. EfficientNetV2-S and MobileNetV2 leverage ImageNet transfer learning to improve generalization on high-fidelity synthetic images.
+- **Novelty:** Custom CNN memprioritaskan efficiency (lightweight, lebih sedikit parameters) untuk fast training dan inference. EfficientNetV2-S dan MobileNetV2 memanfaatkan ImageNet transfer learning untuk meningkatkan generalization pada high-fidelity synthetic images.
 
 **Loss & optimization**
 
 - **Loss:**
-  - Custom CNN: `BCEWithLogitsLoss` (stable for single-logit binary setup).
-  - Pre-trained models (HF Trainer): default cross-entropy (as used by the Transformers Trainer wrappers).
-- **Optimizers & hyperparameters:**
-  - Optimizer: Adam (all models).
-  - Learning rate: 1e-3 (default for experiments).
-  - Weight decay: 0.01.
-  - Mixed precision: FP16 enabled for EfficientNet and MobileNet training.
+- Custom CNN: `BCEWithLogitsLoss` (stable untuk single-logit binary setup).
+* Pre-trained models (HF Trainer): default cross-entropy (seperti yang digunakan oleh Transformers Trainer wrappers).
+
+
+* **Optimizers & hyperparameters:**
+* Optimizer: Adam (semua models).
+* Learning rate: 1e-3 (default untuk experiments).
+* Weight decay: 0.01.
+* Mixed precision: FP16 diaktifkan untuk EfficientNet dan MobileNet training.
+
+
 
 **Training protocol**
 
-- **Epochs:** 3 for all models.
-- **Batch settings:**
-  - Custom CNN: `batch_size=256`.
-  - EfficientNetV2-S: `batch_size=128`, `gradient_accumulation_steps=8`.
-  - MobileNetV2: `batch_size=128`, `gradient_accumulation_steps=1`.
+* **Epochs:** 3 untuk semua models.
+* **Batch settings:**
+* Custom CNN: `batch_size=256`.
+* EfficientNetV2-S: `batch_size=128`, `gradient_accumulation_steps=8`.
+* MobileNetV2: `batch_size=128`, `gradient_accumulation_steps=1`.
+
+
 
 **Evaluation**
 
-- **Metrics:** Accuracy, F1-score, and AUROC.
-- **When evaluated:** Validation metrics are computed during training (periodic checkpoints) and final performance is reported on the held-out test set.
+* **Metrics:** Accuracy, F1-score, dan AUROC.
+* **When evaluated:** Validation metrics dihitung selama training (periodic checkpoints) dan final performance dilaporkan pada held-out test set.
 
 **Hardware & runtime**
 
-- Training was performed on Google Colab with GPU (NVIDIA T4 / L4). Typical wall-clock time per model: ~1–2 hours (varies by model and Colab instance).
+* Training dilakukan di Google Colab dengan GPU (NVIDIA T4 / L4). Typical wall-clock time per model: ~1–2 jam (bervariasi berdasarkan model dan Colab instance).
 
 **Reproducibility**
 
-- Training code and pipelines are provided in `Train_UAP.ipynb`.
-- Model checkpoints are saved in Safetensors format for reproducible loading and inference.
+* Training code dan pipelines disediakan di `Train_UAP.ipynb`.
+* Model checkpoints disimpan dalam format Safetensors untuk reproducible loading dan inference.
 
 
 <h1 align="center">🔧 Langkah Instalasi 🔧</h1>
 
 ### Software Utama
-- **Python:** 3.10+ (recommended)
-- **PyTorch:** 2.0+
+- **Python:** 3.12
+- **PyTorch:** 2.9CU+
 - **CUDA:** 11.8+ (for GPU acceleration)
 - **Hugging Face Transformers:** For pre-trained models
 - **Google Colab:** Recommended environment for running the notebook
@@ -229,13 +240,12 @@ Install the required packages using the provided requirements.txt file:
 ```bash
 pip install -r requirements.txt
 ```
-Key dependencies include: torch, torchvision, transformers, datasets, pillow, scikit-learn, matplotlib, wandb, safetensors.
 
 ### Menjalankan Sistem Prediksi
-Prediction is performed within the Train_UAP.ipynb notebook. Load the trained models (Base CNN, EfficientNet, MobileNet) and run predictions on individual images or the test set. The notebook includes code for loading Safetensors checkpoints and computing predictions with probabilities.
+Prediction dilakukan di dalam Train_UAP.ipynb notebook. Load trained models (Base CNN, EfficientNet, MobileNet) dan run predictions pada individual images atau test set. Notebook mencakup code untuk loading Safetensors checkpoints dan computing predictions dengan probabilities.
 
 ### Pelatihan Model
-Training is conducted via the Train_UAP.ipynb Jupyter notebook. The notebook includes cells for data loading, preprocessing, model definition, training loops, and evaluation. Run the notebook in Google Colab or a local Jupyter environment with GPU support. Models are trained for 3 epochs each, with checkpoints saved in Safetensors format.
+Training dilakukan melalui Train_UAP.ipynb Jupyter notebook. Notebook mencakup cells untuk data loading, preprocessing, model definition, training loops, dan evaluation. Run notebook di Google Colab atau local Jupyter environment dengan GPU support. Models dilatih selama 3 epochs masing-masing, dengan checkpoints disimpan dalam Safetensors format.
 
 ---
 
@@ -248,9 +258,9 @@ The table below reports test-set performance (Accuracy, Precision, Recall, F1-Sc
 
 | Model | Accuracy | Precision | Recall | F1-Score | Analysis |
 |---|---:|---:|---:|---:|---|
-| Base CNN | 0.7073376440820917 | 0.7048360200111173 | 0.7131608548931384 | 0.7089740005591277 | Lower-capacity model trained from scratch; limited pretraining and fewer parameters reduce feature richness and robustness to high-fidelity fakes and compressed images. |
-| EfficientNet | 0.9333708181051448 | 0.9006760270410816 | 0.9741282339707537 | 0.9359632531748177 | High-capacity, pretrained model (in21k) that transfers well — high recall indicates it captures most fakes; slightly lower precision suggests sensitivity to compression/artifact-like patterns producing some FPs. |
-| MobileNet | 0.9544560022490863 | 0.9879227053140096 | 0.9201349831271091 | 0.9528246942341293 | Compact, well-finetuned model with very high precision (few false positives); slightly lower recall indicates conservative positive predictions or missed generator styles — good for high-precision deployment. |
+| Base CNN | 0.70 | 0.70 | 0.71 | 0.70 | Lower-capacity model trained from scratch; limited pretraining and fewer parameters reduce feature richness and robustness to high-fidelity fakes and compressed images. |
+| EfficientNet | 0.93 | 0.90 | 0.97 | 0.93 | High-capacity, pretrained model (in21k) that transfers well — high recall indicates it captures most fakes; slightly lower precision suggests sensitivity to compression/artifact-like patterns producing some FPs. |
+| MobileNet | 0.95 | 0.98 | 0.92 | 0.95 | Compact, well-finetuned model with very high precision (few false positives); slightly lower recall indicates conservative positive predictions or missed generator styles — good for high-precision deployment. |
 
 <div align="center">
   <img src="images/confusion_matrix.png" alt="Confusion Matrix (Test set)" width="700">
@@ -284,6 +294,7 @@ Below are the training and validation learning curves for **Custom CNN (Model 1)
     </td>
   </tr>
 </table>
+---
 
 ##### Run metadata (CustomCNN) 🧾
 Summary of the run used to generate the learning curves:
@@ -414,9 +425,11 @@ Summary of the run used to generate the learning curves:
     "value": "CustomCNN"
   }
 }
-``` 
+```
 
+</details>
 
+---
 ##### Learning Curves — EfficientNet 🔧
 A full gallery of EfficientNetV2 training and evaluation plots with a short caption and a 1-line interpretation for each figure.
 
@@ -1413,22 +1426,42 @@ A full gallery of MobileNet training and evaluation plots with a short caption a
 
 </details>
 
-
 ---
 
+## Error Analysis
 
+### Observations & Root-Cause Hypotheses
 
-</details>
+- False Positive (real → fake): Model kesulitan dengan smooth, shiny textures. Sebagai contoh, specular highlights pada leather album cover disalahartikan sebagai generative smoothing artifacts.
+- False Negative (fake → real): High-quality studio portraits dengan professional lighting (contoh: fashion sample) mengalami misclassified karena aggressive styling menutupi typical generator artifacts.
+- True Negative (correct real): Model membedakan dengan benar natural high-ISO camera grain dalam low-light scenes (contoh: night sky dalam wedding photo) dari artificial GAN noise.
 
----
+### Ablations & Recommended Experiments 🔧
+
+- Tambahkan texture augmentation: Train dengan shiny/smooth textures untuk mencegah model menandai semua smooth surfaces sebagai fake.
+- Diversity augmentation: Sertakan lebih banyak high-fashion/studio-quality synthetic images untuk menutup domain gap pada professionally lit fakes.
+- ISO noise training: Pastikan training set mencakup real images dengan heavy sensor grain (night photography) sehingga model mempertahankan high specificity dalam low-light conditions.
+
+<p align="center">
+  <img src="images/Error/False%20positive.png" alt="False Positive" width="220" />
+  <img src="images/Error/False%20negative.png" alt="False Negative" width="220" />
+  <img src="images/Error/True%20positive.png" alt="True Positive" width="220" />
+  <img src="images/Error/True%20negative.png" alt="True Negative" width="220" />
+</p>
+
+<p align="center">
+  <strong>Kiri atas:</strong> False Positive — specular highlights disalahartikan sebagai artifacts. &nbsp;&nbsp;
+  <strong>Kanan atas:</strong> False Negative — high-quality studio portrait mengalami misclassified. &nbsp;&nbsp;
+  <strong>Kiri bawah:</strong> True Positive — synthetic example terdeteksi dengan benar. &nbsp;&nbsp;
+  <strong>Kanan bawah:</strong> True Negative — real image dengan ISO grain teridentifikasi dengan benar.
+</p>
 
 <h1 align="center">🎓 Sistem Streamlit (Demo) 🎓</h1>
 
-### Tampilan (Screenshots required)
-- Desktop view showing: input upload, prediction probabilities, and heatmap overlay (explainability).  
-- Mobile view (responsive).  
-- Example: upload a real photo → show prediction and heatmap.  
-- Example: upload an AI-generated image → show prediction and heatmap.
+<div align="center">
+  [![Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](https://deepfake-nbtahi5od5xbiqccspmhtj.streamlit.app/)
+  <p><strong>Live Demo:</strong> https://deepfake-nbtahi5od5xbiqccspmhtj.streamlit.app/</p>
+</div>
 
 ### Run locally
 ```bash
@@ -1439,72 +1472,5 @@ streamlit run app.py
 - If deployed on HuggingFace Spaces, add badge:  
 `[![HF Space](https://img.shields.io/badge/Demo-HF%20Space-yellow)]()`
 
----
-
-#### Tampilan Hasil Prediksi
-Refer to the '🎓 Sistem Streamlit (Demo) 🎓' section above for desktop/mobile screenshots, example uploads, and heatmap visualizations.  
-Run locally: `streamlit run app.py` (tested on Streamlit v1.29.0).
-
----
-#### Failure analysis & Ablations 🔍
-We inspected representative examples from `images/Error` to understand common failure modes and guide remediation. Below is a concise visual summary (examples are cropped for readability) and targeted analysis.
-
-<table>
-  <tr>
-    <td align="center">
-      <img src="images/Error/True positive.png" alt="True Positive" width="360">
-      <p><strong>True Positive (Fake → detected)</strong></p>
-    </td>
-    <td align="center">
-      <img src="images/Error/True negative.png" alt="True Negative" width="360">
-      <p><strong>True Negative (Real → correct)</strong></p>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="images/Error/False positive.png" alt="False Positive" width="360">
-      <p><strong>False Positive (Real → predicted fake)</strong></p>
-    </td>
-    <td align="center">
-      <img src="images/Error/False negative.png" alt="False Negative" width="360">
-      <p><strong>False Negative (Fake → predicted real)</strong></p>
-    </td>
-  </tr>
-</table>
-
-### Observations & Root-Cause Hypotheses
-
-- False Positive (real → fake): The model struggles with smooth, shiny textures. For example, the specular highlights on the leather album cover were mistaken for generative smoothing artifacts.
-- False Negative (fake → real): High-quality studio portraits with professional lighting (e.g., the fashion sample) are misclassified because the aggressive styling masks typical generator artifacts.
-- True Negative (correct real): The model correctly distinguishes natural high-ISO camera grain in low-light scenes (e.g., the night sky in the wedding photo) from artificial GAN noise.
-
-### Ablations & Recommended Experiments 🔧
-
-- Add texture augmentation: Train with shiny/smooth textures to prevent the model from flagging all smooth surfaces as fake.
-- Diversity augmentation: Include more high-fashion/studio-quality synthetic images to close the domain gap on professionally lit fakes.
-- ISO noise training: Ensure the training set includes real images with heavy sensor grain (night photography) so the model maintains high specificity in low-light conditions.
----
-#### Limitations
-- Explicitly list limitations: domain shift, unseen generators, ethical concerns (false positive harm), and dataset bias. Mention mitigation pathways and responsible release policy.
----
-
-<h1 align="center">👤 Authors & Citation 👤</h1>
-
-- **Author template (academic):** Jane Doe*, MIT CSAIL, janedoe@mit.edu, [0000-0001-2345-6789](https://orcid.org/), @janedoe_ml  
-- **Add your affiliations, emails, ORCID, GitHub/Twitter links.**
-
-**BibTeX (example):**
-```bibtex
-@inproceedings{yourname2024mimic,
-  title={Your Exact Paper Title},
-  author={Doe, Jane and Smith, John},
-  booktitle={NeurIPS 2024 Workshop on X},
-  year={2024}
-}
-```
-
----
-
-*License & Ethics:* Mention license (e.g., CC-BY-NC) here and link to dataset licenses and IRB/ethics approvals if applicable.
 ---
 
