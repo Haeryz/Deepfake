@@ -1,0 +1,53 @@
+{
+  "architecture": "tf_efficientnetv2_s",
+  "architectures": [
+    "TimmWrapperForImageClassification"
+  ],
+  "do_pooling": true,
+  "dtype": "float32",
+  "initializer_range": 0.02,
+  "label_names": [
+    "LABEL_0",
+    "LABEL_1"
+  ],
+  "model_args": null,
+  "model_type": "timm_wrapper",
+  "num_classes": 2,
+  "num_features": 1280,
+  "pretrained_cfg": {
+    "classifier": "classifier",
+    "crop_mode": "center",
+    "crop_pct": 1.0,
+    "custom_load": false,
+    "first_conv": "conv_stem",
+    "fixed_input_size": false,
+    "input_size": [
+      3,
+      300,
+      300
+    ],
+    "interpolation": "bicubic",
+    "mean": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "pool_size": [
+      10,
+      10
+    ],
+    "std": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "tag": "in21k",
+    "test_input_size": [
+      3,
+      384,
+      384
+    ]
+  },
+  "problem_type": "single_label_classification",
+  "transformers_version": "4.57.3"
+}
