@@ -1,3 +1,7 @@
+[![Dataset](https://img.shields.io/badge/Dataset-Hugging%20Face-blue)](https://huggingface.co/datasets/ComplexDataLab/OpenFake)
+[![Google Drive](https://img.shields.io/badge/Google%20Drive-Folder-green)](https://drive.google.com/drive/folders/1juAYYBkyaGiMBJAfe1UjY7aaLQpTfuVM)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Live%20Demo-red)](https://deepfake-nbtahi5od5xbiqccspmhtj.streamlit.app/)
+
 # <h1 align="center">Real Vs AI generated Image Classification</h1>
 
 <div align="center">
